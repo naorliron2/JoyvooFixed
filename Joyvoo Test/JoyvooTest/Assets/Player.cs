@@ -8,10 +8,22 @@ public class Player : MonoBehaviour
     [SerializeField] TileBASE currentTile;
     public playerColor playerColor;
     [SerializeField] float TimeToMoveToNode;
+    [SerializeField]bool ismoving;
     public void MoveTile(int diceCount)
     {
-        if (diceCount <= 0) { currentTile.LandedOn(this); return; }
+        if (diceCount <= 0)
+        {
+            currentTile.LandedOn(this);
+            ismoving = false;
+            PlayerManager.instance.ChangeTurn();
+            return;
+        }
+        ismoving = true;
         StartCoroutine(MoveToNextTile(diceCount));
+    }
+    public bool IsMoving()
+    {
+        return ismoving;
     }
     public void AddMoney(uint amount)
     {
@@ -43,7 +55,7 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-       
+
     }
 }
-public enum playerColor {blue,red }
+public enum playerColor { blue, red }

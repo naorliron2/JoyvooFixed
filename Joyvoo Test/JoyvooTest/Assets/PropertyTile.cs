@@ -15,7 +15,7 @@ public class PropertyTile : TileBASE
         {
             if (Cost <= playerThatLanded.getMoney())
             {
-                TransferOwnership(playerThatLanded);
+                ApplyOwnership(playerThatLanded);
                 playerThatLanded.SubtractMoney(Cost);
             }
         }
@@ -23,8 +23,9 @@ public class PropertyTile : TileBASE
         {
             //apply penalty
         }
+
     }
-    void TransferOwnership(Player PlayerToOwn)
+    void ApplyOwnership(Player PlayerToOwn)
     {
         ownedBy = PlayerToOwn;
         switch (PlayerToOwn.playerColor)
