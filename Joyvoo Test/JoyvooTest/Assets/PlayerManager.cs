@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class PlayerManager : MonoSingleton<PlayerManager>
 {
-    [SerializeField] Player[] players;
-    [SerializeField] Player currentPlayer;
+    public Player[] players;
+    public Player currentPlayer;
     int playerIndex = 0;
 
     public void PlayTurn()
     {
         if (currentPlayer.IsMoving()) { return; }
-        //roll dice
-        currentPlayer.MoveTile(3);
+        DiceRoller.instance.Roll();
 
     }
 

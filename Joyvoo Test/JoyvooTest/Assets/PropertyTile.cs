@@ -13,15 +13,30 @@ public class PropertyTile : TileBASE
     {
         if (ownedBy == null)
         {
-            if (Cost <= playerThatLanded.getMoney())
+            if (Cost < playerThatLanded.getMoney())
             {
                 ApplyOwnership(playerThatLanded);
                 playerThatLanded.SubtractMoney(Cost);
+                IngameUiManager.instance.PopUp("Sold! to " + PlayerManager.instance.currentPlayer.gameObject.name + " for " + Cost + "$");
             }
         }
         else
         {
-            //apply penalty
+            if (ownedBy != playerThatLanded)
+            {
+                IngameUiManager.instance.PopUp("Not your property, owner gains " + Cost * 0.5 + "$");
+                foreach (var player in PlayerManager.instance.players)
+                {
+                    if (player == playerThatLanded)
+                    {
+                        player.SubtractMoney((uint)(Cost * 0.5f));
+                    }
+                    else
+                    {
+                        player.AddMoney((uint)(Cost * 0.5f));
+                    }
+                }
+            }
         }
 
     }
