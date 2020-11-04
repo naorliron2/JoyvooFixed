@@ -9,4 +9,14 @@ public class StartingTile : TileBASE
     {
         playerThatLanded.AddMoney(rewardAmount);
     }
+
+    public override void PassedBy(Player playerThatLanded)
+    {
+        if (PlayerManager.instance.turnCount <= 2) { return; }
+
+            playerThatLanded.AddMoney(rewardAmount);
+        IngameUiManager.instance.PopUp("Passed by start, gained " + rewardAmount + "$");
+
+
+    }
 }

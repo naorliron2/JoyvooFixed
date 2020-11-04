@@ -8,7 +8,7 @@ public class DiceRoller : MonoSingleton<DiceRoller>
     [SerializeField] float rollingDieTime;
     [SerializeField] float switchDieSideTime;
     [SerializeField] GameObject[] dieSides;
-    int lastActiveDie = 0;
+    [SerializeField]int lastActiveDie = 0;
     [SerializeField] float timer;
     [SerializeField] float switchTimer;
     bool startTimer;
@@ -25,15 +25,16 @@ public class DiceRoller : MonoSingleton<DiceRoller>
 
         if (startTimer)
         {
+
             timer -= Time.deltaTime;
             if (timer > 0)
             {
                 switchTimer -= Time.deltaTime;
                 if (switchTimer <= 0)
                 {
+                    dieSides[lastActiveDie].SetActive(false);
                     //Debug.Log("aaaaa");
                     int randNum = Random.Range(0, dieSides.Length);
-                    dieSides[lastActiveDie].SetActive(false);
                     dieSides[randNum].SetActive(true);
                     lastActiveDie = randNum;
                     switchTimer = switchDieSideTime;
@@ -41,9 +42,10 @@ public class DiceRoller : MonoSingleton<DiceRoller>
             }
             else
             {
-                int dieRoll = Random.Range(0, dieSides.Length);
                 dieSides[lastActiveDie].SetActive(false);
+                int dieRoll = Random.Range(0, dieSides.Length);
                 dieSides[dieRoll].SetActive(true);
+                lastActiveDie = dieRoll;
                 startTimer = false;
                 timer = rollingDieTime;
                 switchTimer = switchDieSideTime;

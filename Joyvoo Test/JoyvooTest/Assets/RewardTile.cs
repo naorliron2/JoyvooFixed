@@ -61,6 +61,10 @@ public class RewardTile : TileBASE
 
     }
 
+    public override void PassedBy(Player playerThatLanded)
+    {
+    }
+
     bool InRange(int value, int min, int max)
     {
         return (value >= min && value <= max);

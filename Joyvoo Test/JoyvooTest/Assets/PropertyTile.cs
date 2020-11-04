@@ -40,6 +40,11 @@ public class PropertyTile : TileBASE
         }
 
     }
+
+    public override void PassedBy(Player playerThatLanded)
+    {
+    }
+
     void ApplyOwnership(Player PlayerToOwn)
     {
         ownedBy = PlayerToOwn;
