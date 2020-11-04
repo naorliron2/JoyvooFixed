@@ -9,6 +9,9 @@ public class PropertyTile : TileBASE
     [Header("References")]
     [SerializeField] GameObject ownedByBlue;
     [SerializeField] GameObject ownedByRed;
+    [SerializeField] ParticleSystem blueParticle;
+    [SerializeField] ParticleSystem redParticle;
+
     [Header("Debug Info")]
     [SerializeField] Player ownedBy;
 
@@ -33,6 +36,8 @@ public class PropertyTile : TileBASE
         //if the player can afford the land
         if (Cost < playerThatLanded.getMoney())
         {
+            //Play particle
+            playerThatLanded.PlayPropertyParticle();
             //Applies the ownership and color
             ApplyOwnership(playerThatLanded);
             //subtract the cost from the player
@@ -75,7 +80,7 @@ public class PropertyTile : TileBASE
         switch (PlayerToOwn.playerColor)
         {
             case playerColor.blue:
-                ownedByBlue.SetActive(true);
+                ownedByBlue.SetActive(true);                
                 break;
             case playerColor.red:
                 ownedByRed.SetActive(true);

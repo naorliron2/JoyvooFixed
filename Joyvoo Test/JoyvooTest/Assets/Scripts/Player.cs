@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Tilemaps;
 
 public class Player : MonoBehaviour
 {
     [Header("Variables")]
     [SerializeField] TileBASE currentTile;
     [SerializeField] float TimeToMoveToNode;
+    [SerializeField] Vector3 offset;
     public playerColor playerColor;
     [Header("References")]
     [SerializeField] TMP_Text cashText;
@@ -16,6 +18,11 @@ public class Player : MonoBehaviour
     [SerializeField] int money;
     [SerializeField] bool ismoving;
     [SerializeField] bool hasLost;
+    [Header("Particle Systems")]
+    [SerializeField] ParticleSystem propertyParticle;
+    [SerializeField] ParticleSystem diceParticle;
+    [SerializeField] ParticleSystem moneyparticle;
+    [SerializeField] ParticleSystem moneyLessparticle;
 
     bool firstRun = true;
     private const float DISTANCE_CUTOFF = 0.07f;
@@ -51,6 +58,7 @@ public class Player : MonoBehaviour
     /// <param name="amount"></param>
     public void AddMoney(uint amount)
     {
+        moneyparticle.Play();
         money += (int)amount;
         UpdateCash();
     }
@@ -65,6 +73,7 @@ public class Player : MonoBehaviour
     /// <param name="amount"></param>
     public void SubtractMoney(uint amount)
     {
+        moneyLessparticle.Play();
         money -= (int)amount;
         UpdateCash();
 
@@ -76,6 +85,14 @@ public class Player : MonoBehaviour
     public int getMoney()
     {
         return money;
+    }
+    public void PlayPropertyParticle()
+    {
+        propertyParticle.Play();
+    }
+    public void PlayDiceParticle()
+    {
+        diceParticle.Play();
     }
     /// <summary>
     /// Moves the player forward on the board an amount of tiles equivalant to the diceCount
@@ -122,10 +139,10 @@ public class Player : MonoBehaviour
         while (true)
         {
             //Smooth damping to the next tile
-            transform.position = Vector3.SmoothDamp(transform.position, currentTile.nextTile.tileTransform.position, ref velocity, TimeToMoveToNode);
+            transform.position = Vector3.SmoothDamp(transform.position, currentTile.nextTile.tileTransform.position + offset, ref velocity, TimeToMoveToNode);
             //since we're SmoothDamping from our position to the next tile each frame, the last few frames take alot longer to move a very little amount
             //because of that we check if we're close enough, and if we are, we exit the loop
-            if (Vector3.Distance(transform.position, currentTile.nextTile.tileTransform.position) < DISTANCE_CUTOFF)
+            if (Vector3.Distance(transform.position, currentTile.nextTile.tileTransform.position + offset) < DISTANCE_CUTOFF)
                 break;
             yield return null;
 
